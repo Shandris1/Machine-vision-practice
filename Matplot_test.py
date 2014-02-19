@@ -2,7 +2,7 @@ from PIL import Image
 from pylab import *
 
 def main():
-	intaractive_animation("download.jpg")
+	intaractive_animation("pictures/download.jpg")
 	
 
 def intaractive_animation(image_path):

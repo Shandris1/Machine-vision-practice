@@ -1,7 +1,17 @@
 import os
 from PIL import Image
+from numpy import *
+from pylab import *
 
 def main():
+	im = array(Image.open('pictures/download.jpg').convert('L'))
+	im2,cdf = histeq(im)
+	show_picture=Image.fromarray(im2)
+	print show_picture
+	imshow(show_picture)
+	show()
+
+	"""
 	infile = "download.jpg"
 	outfile = os.path.splitext(infile)[0] + "M.jpg"
 
@@ -15,6 +25,7 @@ def main():
 	print pil_im
 	pil_im.save(outfile)
 	open(outfile)
+	"""
 
 def copy_paste_region(path):
 	box = (50,50,110,110)
@@ -53,6 +64,16 @@ def compute_averege(imlist):
 
 	#return average as uint8
 	return array(averageim,'uint8')
+
+def histeq(im,nbr_bins=256):
+	#Histogram equalization of a grayscale image
+	#get image histogram
+	imhist,bins = histogram(im.flatten(),nbr_bins,normed=True)
+	cdf = imhist.cumsum()
+	cdf = 255*cdf / cdf [-1]
+
+	im2= interp(im.flatten(),bins[:-1],cdf)
+	return im2.reshape(im.shape), cdf
 	pass
 
 main()
