@@ -19,9 +19,11 @@ pygame.camera.init()
 cam = pygame.camera.Camera("/dev/video0",(640,480))
 cam.start()
 img = cam.get_raw()
+print img
 
 
 #pygame.image.save(img,"seeds.jpg")
+
 cam.stop()
 
 im = array(Image.open('seeds.jpg').convert('L'))

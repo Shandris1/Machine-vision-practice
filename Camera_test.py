@@ -31,7 +31,7 @@ class Capture(object):
         self.clist = pygame.camera.list_cameras()
         if not self.clist:
             raise ValueError("Sorry, no cameras detected.")
-        self.cam = pygame.camera.Camera(self.clist[0], self.size, "HSV")
+        self.cam = pygame.camera.Camera(self.clist[0], self.size, "RGB")
         self.cam.start()
 
         # create a surface to capture to.  for performance purposes
@@ -45,15 +45,19 @@ class Capture(object):
         # on most cameras, some will never return true.
         if self.cam.query_image():
             self.snapshot = self.cam.get_image(self.snapshot)
-            pygame.transform.threshold(self.thresholded,self.snapshot,self.ccolor,(30,30,30),(0,0,0),2)
+            #pygame.transform.threshold(self.thresholded,self.snapshot,self.ccolor,(30,30,30),(0,0,0),2)
+            self.thresholded = pygame.transform.laplacian(self.snapshot)
             #bpygame.transform.threshold(self.thresholded,self.snapshot,(0,255,0),(90,170,170),(0,0,0),2)
 
 
         # blit it to the display surface.  simple!
         self.display.blit(self.thresholded, (0,0))
+
         
 
         pygame.display.flip()
+
+    
 
     def main(self):
         going = True
