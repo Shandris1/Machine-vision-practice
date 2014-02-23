@@ -1,16 +1,22 @@
 import cv2
 import numpy as np
 camera = cv2.VideoCapture(0)
+Vfile = "video.vga"
 #import standart libriaries
 
+def main():
+  while(1):
+    im = camera.read()[1] # read from webcam
+    im_gray = cv2.cvtColor(im,cv2.COLOR_BGR2GRAY) #convert to BW
+    cv2.imshow('BW image2',im_gray) # Display to window
 
-while(1):
-    im = camera.read()[1]
-    im_gray = cv2.cvtColor(im,cv2.COLOR_BGR2GRAY)
-    cv2.imshow('BW image2',im_gray)
-    if cv2.waitKey(5)==27:
-        break
-cv2.destroyAllWindows()
+    if cv2.waitKey(5)==27: #close window on escape
+      break
+        
+
+  cv2.destroyAllWindows()
+
+main()
     
 
 """
