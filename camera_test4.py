@@ -1,20 +1,65 @@
 import cv2
 import numpy as np
+from matplotlib import pyplot as plt
 camera = cv2.VideoCapture(0)
 Vfile = "video.vga"
 #import standart libriaries
 
+
+
+
 def main():
+  state = 1
+  while state != 0:
+    state=BlackandWhite()
+    print state
+    cv2.destroyAllWindows()
+    if state==1:
+      edgedetection()
+
+        
+
+    cv2.destroyAllWindows()
+
+def AdapriveEdgeDetection():
   while(1):
+    img = camera.read()[1] # read from webcam
+    img = cv2.medianBlur(img,5)
+
+  pass
+
+def edgedetection():
+  while(1):
+    img = camera.read()[1] # read from webcam
+    edges = cv2.Canny(img,50,100)
+
+    cv2.imshow('Edge detection',edges) # Display to window
+    key=cv2.waitKey(5)
+    if key==27: #close window on escape
+      status=0
+      break
+    if key==32:
+      status=2
+      break 
+  return status
+
+def BlackandWhite():
+  while(1):
+    status=0
     im = camera.read()[1] # read from webcam
     im_gray = cv2.cvtColor(im,cv2.COLOR_BGR2GRAY) #convert to BW
     cv2.imshow('BW image2',im_gray) # Display to window
-
-    if cv2.waitKey(5)==27: #close window on escape
+    key=cv2.waitKey(5)
+    if key==27: #close window on escape
+      status=0
       break
-        
+    if key==32:
+      status=1
+      break 
 
-  cv2.destroyAllWindows()
+  return status
+
+
 
 main()
     
