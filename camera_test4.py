@@ -15,7 +15,8 @@ def main():
     print state
     cv2.destroyAllWindows()
     if state==1:
-      edgedetection()
+      state=Contours()
+
 
         
 
@@ -31,7 +32,7 @@ def AdapriveEdgeDetection():
 def edgedetection():
   while(1):
     img = camera.read()[1] # read from webcam
-    edges = cv2.Canny(img,50,100)
+    edges = cv2.Canny(img,75,100)
 
     cv2.imshow('Edge detection',edges) # Display to window
     key=cv2.waitKey(5)
@@ -59,6 +60,25 @@ def BlackandWhite():
 
   return status
 
+def Contours():
+  while(1):
+    status=0
+    im = camera.read()[1] # read from webcam
+    im_gray = cv2.cvtColor(im,cv2.COLOR_BGR2GRAY) #convert to BW
+    ret,thresh = cv2.threshold(im_gray,127,255,0)
+    #print (thresh)
+    #cv2.imshow('BW image2',thresh) # Display to window
+    im_contours, hierarchy = cv2.findContours(thresh,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+    img = cv2.drawContours(im, im_contours, -1, (0,255,0), 3)
+    cv2.imshow('BW image2',img) # Display to window
+    key=cv2.waitKey(5)
+    if key==27: #close window on escape
+      status=0
+      break
+    if key==32:
+      status=1
+      break 
+    cv2.destroyAllWindows()
 
 
 main()
