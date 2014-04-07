@@ -7,8 +7,8 @@ SW = 0
 EW = 760
 SH = 290
 EH = 800
-im_uncropped = cv2.imread('seed_test.JPG')
-img = im_uncropped [SW:EW,SH:EH]
+img = cv2.imread('seed_test.JPG')
+#img = im_uncropped [SW:EW,SH:EH]
 
  
 

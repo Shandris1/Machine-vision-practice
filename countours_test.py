@@ -68,7 +68,7 @@ def GenerateImage(Starting_width,Ending_width,Starting_hight,Ending_hight):
     ret,thresh = cv2.threshold(imgray,100,255,0) ## determinate objects
     kernel= np.ones((3,3),np.uint8)
     thresh = cv2.morphologyEx(thresh,cv2.MORPH_OPEN,kernel)
-    #thresh = cv2.morphologyEx(thresh,cv2.MORPH_CLOSE,kernel)
+    thresh = cv2.morphologyEx(thresh,cv2.MORPH_CLOSE,kernel)
     #cv2.imshow("Image/BW",thresh)
 
     contours, hierarchy = cv2.findContours(thresh,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
@@ -84,9 +84,10 @@ def GenerateImage(Starting_width,Ending_width,Starting_hight,Ending_hight):
             #print(Carea)
             if(Carea>100)&(Carea<1500):
 
+                mask = np.zeros(imgray.shape,np.uint8)
+                color = cv2.mean(im,mask = mask)
                 ellipse = cv2.fitEllipse(cnt)
                 cv2.ellipse(im,ellipse,(0,255,255),2)
-                mean = cv2.mean(im,ellipse)
     key=cv2.waitKey(5)
     if key==32:
         cv2.destroyAllWindows()

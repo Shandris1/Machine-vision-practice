@@ -9,13 +9,13 @@ Vfile = "video.vga"
 #im = camera.read()[1] # read from webcam
 filename = "seed_test.JPG" 
 im = cv2.imread(filename)
-new = im.copy()
+
 
 threshold_value=100
 
 while(1):
     im_live = camera.read()[1] # read from webcam
-    im_live = cv2.medianBlur(im_live,5)
+    #im_live = cv2.medianBlur(im_live,5)
     im_gray_live = cv2.cvtColor(im_live,cv2.COLOR_BGR2GRAY)
     ret,im_BW_live = cv2.threshold(im_gray_live,threshold_value,255,0) #convert to BW
     #th3 = cv2.adaptiveThreshold(im_live,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,5,2)
@@ -24,12 +24,21 @@ while(1):
     key=cv2.waitKey(5)
     if key==32:
         cv2.destroyAllWindows()
+        im = camera.read()[1]
+        print ("b4",im)
+        #cv2.imwrite("temp.jpg",im)
+        #im=cv2.imread("temp.jpg")
+
+        print ("at",im)
         break
     if key==65364:
         threshold_value=threshold_value+5
     if key==65362:
         threshold_value=threshold_value-5
 
+cv2.imshow("ellipse1",im)
+cv2.waitKey(0)
+new = im.copy()
 # new_image = old_image [heght:end_heght,width:end_width]
 
 imgray = cv2.cvtColor(im,cv2.COLOR_BGR2GRAY)

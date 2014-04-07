@@ -1,21 +1,37 @@
-from PIL import Image
-from numpy import *
 
-def pca(X):
-	num_data,dim= X.shape
-	mean_X=X.mean(axis=0)
-	X = X - mean_X
 
-	if dim>num_data
-		M = dot (X,X.T)
-		e,EV = linalg.eigh(M)
-		tmp = dot(X.T,EV).T
-		V = tmp[::-1]
-		S = sqrt(e)[::1]
-		for i in range(V.shape[1])
-			V[:,i] /= S
-	else:
-		U,S,V = linalg.svd(X)
-		V = V[:num_data]
+import cv2
+import numpy as np
 
-	return V,S,mean_X
+# To display a single image in a window
+# Window is destroyed on pressing any key
+def display(windowName, image):
+  cv2.namedWindow(windowName, 1)
+  cv2.imshow(windowName, image)
+  cv2.waitKey(0)
+  cv2.destroyAllWindows()
+
+# Read image
+img = cv2.imread('water_coins.jpg')
+# Convert to grayscale image
+gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+display('gray', gray)
+# Convert to binary image
+ret,thresh = cv2.threshold(gray,0,255,cv2.THRESH_BINARY_INV+cv2.THRESH_OTSU)
+display('binary', thresh)
+
+# noise removal
+# to remove any small white noises use morphological opening
+kernel = np.ones((3,3),np.uint8)
+opening = cv2.morphologyEx(thresh,cv2.MORPH_OPEN,kernel, iterations = 2)
+sure_bg = cv2.dilate(opening,kernel,iterations=3)
+display('Sure Background', sure_bg)
+
+dist_transform = cv2.distanceTransform(opening,cv2.cv.CV_DIST_L2,5)
+ret, sure_fg = cv2.threshold(dist_transform,0.7*dist_transform.max(),255,0)
+display('Sure Foreground', sure_fg)
+
+# Finding unknown region
+sure_fg = np.uint8(sure_fg)
+unknown = cv2.subtract(sure_bg,sure_fg)
+display('unknown area', unknown)

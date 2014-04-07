@@ -66,7 +66,7 @@ def Contours():
     im = camera.read()[1] # read from webcam
     im_gray = cv2.cvtColor(im,cv2.COLOR_BGR2GRAY) #convert to BW
     ret,thresh = cv2.threshold(im_gray,127,255,0)
-    #print (thresh)
+    #print (thresh) 
     #cv2.imshow('BW image2',thresh) # Display to window
     im_contours, hierarchy = cv2.findContours(thresh,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
     img = cv2.drawContours(im, im_contours, -1, (0,255,0), 3)
